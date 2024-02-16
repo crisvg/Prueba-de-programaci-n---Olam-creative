@@ -3,9 +3,10 @@ import { Matrix } from './components/Matrix'
 
 function App() {
     const [matrix, setMatrix] = useState([[]]);
-    const [wordList, setPalabras] = useState('');
-    const [result, setResult] = useState([]);//Array de objetos que indica si la pabra fue encontrada o no
-
+    const [matrixInput, setMatrixInput] = useState('');
+    const [wordList, setWordList] = useState(null);
+    const [wordListInput, setWordListInput] = useState('');
+    const [result, setResult] = useState([]);
     const [messageError, setMessajeError] = useState('');
 
     const validateMatriXInput = (value) => {
@@ -15,30 +16,43 @@ function App() {
             trimmedValue.match(/.{14}\n/g) &&
             trimmedValue.split(",").every((part) => part.length <= 14);
 
-        return isValidFormat && trimmedValue.split(",").every((part) => part.trim()); // Añade validación de espacios en blanco
+        return isValidFormat && trimmedValue.split(",").every((part) => part.trim());
     };
 
     const validateWordListInput = (value) => {
         const trimmedValue = value.trim();
-        const isValidFormat = /^[a-zA-Z]+$/.test(trimmedValue.replace(/,/g, "")); // Elimina comas para validar solo letras
-        const isValidList = trimmedValue.split(",").every((word) => word.length > 0); // Valida que cada palabra tenga al menos 1 letra
+        const isValidFormat = /^[\w\s]+$/.test(trimmedValue);
+        const isValidList = trimmedValue.split(",").every((word) => word.length > 0);
 
         return isValidFormat && isValidList;
     };
 
 
     const handleMatrizChange = (event) => {
-        setMatrix(event.target.value);
+        setMatrixInput(event.target.value);
         setMessajeError(validateMatriXInput(event.target.value) ? null : 'Formato de la matriz es incorrecto');
     };
 
     const handlePalabrasChange = (event) => {
-        setPalabras(event.target.value);
+        setWordListInput(event.target.value);
         setMessajeError(validateWordListInput(event.target.value) ? null : 'Formato de la lista de palabras es incorrecto');
     };
 
+    const createGrid = (matrixInString) => {
+        const rows = matrixInString.split('\n');
+        const grid = rows.map((row) => row.split(','));
+
+        return grid;
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        if (validateMatriXInput(matrixInput) && validateWordListInput(wordListInput)) {
+            setMessajeError(null);
+            setMatrix(createGrid(matrixInput));
+            setWordList(wordListInput);
+        } else setMessajeError('Formato de matriz o lista de palabras incorrecto')
 
         // Implementar la lógica para buscar las palabras en la sopa de letras
         // y actualizar el estado de "resultados".
@@ -56,29 +70,28 @@ function App() {
                     <textarea
                         id="matrix"
                         name="matrix"
-                        value={matrix}
+                        value={matrixInput}
                         onChange={handleMatrizChange}
                     />
-                    {messageError && <span className="error-message">{messageError}</span>}
                 </label>
                 <label htmlFor="palabras">Palabras:
                     <textarea
                         id="wordList"
                         name="wordList"
-                        value={wordList}
+                        value={wordListInput}
                         onChange={handlePalabrasChange}
                     />
-                    {messageError && <span className="error-message">{messageError}</span>}
                 </label>
                 <button type="submit">Enviar</button>
             </form>
+            {messageError && <span className="error-message">{messageError}</span>}
             <br />
             <Matrix matrix={matrix} />
             <br />
             <div className='resultados'>
                 <ul>
                     {result.map((resultado) => (
-                        <li key={resultado.word}>{resultado.found ? 'Encontrada' : 'No encontrada'}: {resultado.word}</li>
+                        <li key={resultado.word} className={resultado.found ? 'encontrada' : 'no-encontrada'}> {resultado.word}</li>
                     ))}
                 </ul>
             </div>

@@ -13,11 +13,13 @@ Este proyecto implementa una aplicación que resuelve sopas de letras con las si
 ## Recursos especiales utilizados:
 - CSS de razzlepuzzles.com
 ## Guía de despliegue:
-1. Instalar las dependencias: `npm install`
-2. Iniciar el servidor de desarrollo: `npm run dev`
-    La aplicación se abrirá en el navegador. En la URL indicada en la terminal.
-    
+1. Clona el repositorio del proyecto en tu computadora.
+2. Abre una terminal en la carpeta del proyecto `cd projects/prueba_programación_react_only`.
+3. Instala las dependencias con el comando `npm install`.
+4. Inicia el servidor de desarrollo con el comando `npm run dev`.
+5. La aplicación se abrirá en el navegador en la URL indicada en la terminal.
 
+    
 > [!NOTE]Nota
 > Para modificar el contenido de la sopa de letras, ingresa la las letras separadas por comas y con saltos de línea al finalizar la fila y la lista de palabras en el elemento `input` correpondiente.  
 

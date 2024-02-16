@@ -1,4 +1,4 @@
-export function workListSorter(wordList) {
+function workListSorter(wordList) {
     let wordListSorted = [...wordList];
 
     wordListSorted.sort(function (a, b) {
@@ -8,7 +8,7 @@ export function workListSorter(wordList) {
     return wordListSorted;
 }
 
-export function usableLetters(wordList) {
+function usableLetters(wordList) {
     let letters = [];
     let usableWordList = workListSorter(wordList);
 
@@ -19,7 +19,6 @@ export function usableLetters(wordList) {
 }
 
 export function wordListSolver(wordList, wordSearchMatrix) {
-    let usableLetters = usableLetters(wordList);
     let wordResults = [];
 
     for (let i = 0; i < wordList.length; i++) {
@@ -30,7 +29,7 @@ export function wordListSolver(wordList, wordSearchMatrix) {
         for (let r = 0; r < wordSearchMatrix.length; r++) {
             for (let c = 0; c < wordSearchMatrix[r].length; c++) {
                 let letter = wordSearchMatrix[r][c];
-                if (!usableLetters.includes(letter))
+                if (!usableLetters(wordList).has(letter))
                     continue;
 
                 let current = "";
@@ -196,7 +195,7 @@ export function wordListSolver(wordList, wordSearchMatrix) {
         }
         wordResults.push({
             word: word,
-            found: found,
+            found: found ? 'wordFound' : 'wordNotFound',
             positions: letterPositions
         });
     }

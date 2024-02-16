@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Matrix } from './components/Matrix'
 
+import { wordListSolver } from './logic/WordSearchSolver.js'
+
 function App() {
     const [matrix, setMatrix] = useState([[]]);
     const [matrixInput, setMatrixInput] = useState('');
@@ -51,13 +53,10 @@ function App() {
         if (validateMatriXInput(matrixInput) && validateWordListInput(wordListInput)) {
             setMessajeError(null);
             setMatrix(createGrid(matrixInput));
-            setWordList(wordListInput);
+            setWordList(wordListInput.split('\n'));
         } else setMessajeError('Formato de matriz o lista de palabras incorrecto')
 
-        // Implementar la lógica para buscar las palabras en la sopa de letras
-        // y actualizar el estado de "resultados".
-
-        //setResultados([]);
+        setResult(wordListSolver(wordList, matrix));
     };
 
     return (
@@ -65,37 +64,41 @@ function App() {
             <header>
                 <h1>Sopa de letras</h1>
             </header>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="matriz">Matriz:
-                    <textarea
-                        id="matrix"
-                        name="matrix"
-                        value={matrixInput}
-                        onChange={handleMatrizChange}
-                    />
-                </label>
-                <label htmlFor="palabras">Palabras:
-                    <textarea
-                        id="wordList"
-                        name="wordList"
-                        value={wordListInput}
-                        onChange={handlePalabrasChange}
-                    />
-                </label>
-                <button type="submit">Enviar</button>
-            </form>
-            {messageError && <span className="error-message">{messageError}</span>}
-            <br />
-            <Matrix matrix={matrix} />
-            <br />
-            <div className='resultados'>
-                <ul>
-                    {result.map((resultado) => (
-                        <li key={resultado.word} className={resultado.found ? 'encontrada' : 'no-encontrada'}> {resultado.word}</li>
-                    ))}
-                </ul>
-            </div>
-        </div>
+            <section id='content'>
+                <form id='word-input' onSubmit={handleSubmit}>
+                    <label htmlFor="matriz">Matriz:
+                        <textarea
+                            id="matrix"
+                            name="matrix"
+                            value={matrixInput}
+                            onChange={handleMatrizChange}
+                        />
+                    </label>
+                    <label htmlFor="palabras">Palabras:
+                        <textarea
+                            id="wordList"
+                            name="wordList"
+                            value={wordListInput}
+                            onChange={handlePalabrasChange}
+                        />
+                    </label>
+                    <button type="submit">Enviar</button>
+                </form>
+                {messageError && <span className="error-message">{messageError}</span>}
+                <br />
+                <div id='contentSetter'>
+                    <Matrix matrix={matrix} />
+                </div>
+                <br />
+                <div id='result'>
+                    <ul id="words">
+                        {result.map((resultado) => (
+                            <li key={resultado.word} className={`word ${resultado.found}`}> {resultado.word}</li>
+                        ))}
+                    </ul>
+                </div>
+            </section >
+        </div >
     );
 }
 

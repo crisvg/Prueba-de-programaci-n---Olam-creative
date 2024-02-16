@@ -6,7 +6,8 @@ import { wordListSolver } from './logic/WordSearchSolver.js'
 function App() {
     const [matrix, setMatrix] = useState([[]]);
     const [matrixInput, setMatrixInput] = useState('');
-    const [wordList, setWordList] = useState(null);
+    // eslint-disable-next-line no-unused-vars
+    const [wordList, setWordList] = useState([]);
     const [wordListInput, setWordListInput] = useState('');
     const [result, setResult] = useState([]);
     const [messageError, setMessajeError] = useState('');
@@ -45,18 +46,24 @@ function App() {
         const grid = rows.map((row) => row.split(','));
 
         return grid;
-    }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (validateMatriXInput(matrixInput) && validateWordListInput(wordListInput)) {
-            setMessajeError(null);
-            setMatrix(createGrid(matrixInput));
-            setWordList(wordListInput.split('\n'));
-        } else setMessajeError('Formato de matriz o lista de palabras incorrecto')
+        if (!(validateMatriXInput(matrixInput) && validateWordListInput(wordListInput))) {
+            setMessajeError('Formato de matriz o lista de palabras incorrecto');
+            return
+        }
 
-        setResult(wordListSolver(wordList, matrix));
+        setMessajeError('');
+
+        let newMatrix = createGrid(matrixInput);
+        let newWordList = wordListInput.split('\n');
+
+        setMatrix(newMatrix);
+        setWordList(newWordList);
+        setResult(wordListSolver(newWordList, newMatrix));
     };
 
     return (

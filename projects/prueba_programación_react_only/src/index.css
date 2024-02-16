@@ -65,7 +65,6 @@ button {
 }
 
 #wordsearch {
-  position: absolute;
   z-index: 3;
   top: 0;
   right: 0;
@@ -91,12 +90,11 @@ button {
   width: 7.14285714286%;
   vertical-align: top;
   white-space: nowrap;
-}
-
-.cellVal {
+  color: #333;
   font-weight: bold;
   text-align: center;
 }
+
 
 #result {
   font-size: 16px;

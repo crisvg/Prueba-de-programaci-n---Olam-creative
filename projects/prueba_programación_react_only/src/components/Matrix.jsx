@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-
 export const Matrix = ({ matrix }) => {
     return (
         <div id="wordsearch">

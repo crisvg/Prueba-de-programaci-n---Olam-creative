@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-
 export const Word = ({ word }) => {
     return (
         <span>
